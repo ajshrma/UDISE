@@ -1,15 +1,27 @@
 import axios from 'axios';
 
+// const instance = axios.create({
+//   baseURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000/api/v1',
+//   timeout: 10000, // 10 second timeout for production
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
+//     'Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
+//   },
+//   withCredentials: true,
+// });
+
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5000/api/v1',
-  timeout: 10000, // 10 second timeout for production
+  timeout: 10000, // 10 second timeout
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
-    'Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
+    // ❌ remove Access-Control-Allow-Origin
+    // ❌ remove Origin (browser sets it automatically)
   },
   withCredentials: true,
 });
+
 
 // For SSR/Node.js requests only: explicitly set Origin and (requested) ACAO
 // Browsers do not allow setting these headers via JS; they are managed by the browser.
