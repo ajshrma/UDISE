@@ -49,13 +49,13 @@ const mockVillages: Record<string, string[]> = {
 
 export default function FilterSystem() {
   const {
-    filters,
     setState,
     setDistrict,
     setBlock,
     setVillage,
     clearFilters,
     getActiveFilters,
+    ...filters
   } = useFilters();
 
   const { state, district, block, village } = filters;
