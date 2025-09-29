@@ -41,7 +41,7 @@
   - Build Command: `npm run build`
 - [ ] Set environment variable:
   ```
-  NEXT_APP_SERVER_URL=https://udise-dashboard-backend.onrender.com/api/v1
+  NEXT_PUBLIC_SERVER_URL=https://udise-dashboard-backend.onrender.com/api/v1
   ```
 - [ ] Deploy and wait for success
 - [ ] Note frontend URL: `https://udise-dashboard.vercel.app`
@@ -64,6 +64,6 @@
 
 ## Troubleshooting
 - CORS issues → Update CLIENT_URL in Render
-- API connection issues → Check NEXT_APP_SERVER_URL in Vercel
+- API connection issues → Check NEXT_PUBLIC_SERVER_URL in Vercel
 - Database issues → Verify MONGO_URI and MongoDB access
 - Build failures → Check package.json and dependencies
