@@ -19,12 +19,19 @@ dbConfig();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: '*',
-    credentials: true,
-  })
-);
+// Trust proxy to ensure "secure" cookies work behind proxies (Render/NGINX)
+app.set('trust proxy', 1);
+
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+// Handle preflight
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

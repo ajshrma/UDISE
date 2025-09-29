@@ -56,6 +56,7 @@ const setRefreshCookie = (res, refreshToken, options) => {
   res.cookie("refreshToken", refreshToken, {
     ...options,
     secure: true,
+    sameSite: 'none',
     httpOnly: true,
     expires: new Date(Date.now() + expiryTime),
   });
@@ -73,6 +74,7 @@ const setAuthCookie = (res, authToken, options) => {
   res.cookie("authToken", authToken, {
     ...options,
     secure: true,
+    sameSite: 'none',
     httpOnly: true,
     expires: new Date(Date.now() + expiryTime),
   });
