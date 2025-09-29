@@ -6,6 +6,7 @@ const instance = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
+    'Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
   },
   withCredentials: true,
 });
@@ -15,6 +16,7 @@ const instance = axios.create({
 if (typeof window === 'undefined') {
   const clientOrigin = process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000';
   instance.defaults.headers.common['Origin'] = clientOrigin;
+  instance.defaults.headers.common['Access-Control-Allow-Origin'] = clientOrigin;
   // Note: Access-Control-Allow-Origin is a response header; setting it on requests has no effect,
   // but it's included here per request for non-browser environments.
   (instance.defaults.headers.common as any)['Access-Control-Allow-Origin'] = clientOrigin;

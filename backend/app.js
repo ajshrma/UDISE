@@ -23,15 +23,30 @@ const app = express();
 app.set('trust proxy', 1);
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:3000';
+    // Normalize origins by removing trailing slashes for comparison
+    const normalizedOrigin = origin?.replace(/\/$/, '');
+    const normalizedAllowed = allowedOrigin.replace(/\/$/, '');
+    
+    if (!origin || normalizedOrigin === normalizedAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
-// Handle preflight
+// Handle preflight requests explicitly
 app.options('*', cors(corsOptions));
+// Additional preflight handling for specific routes
+app.options('/api/v1/auth/*', cors(corsOptions));
+app.options('/api/v1/user/*', cors(corsOptions));
+app.options('/api/v1/schools/*', cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
