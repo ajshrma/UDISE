@@ -24,7 +24,8 @@ app.set('trust proxy', 1);
 
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:3000';
+    // const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:3000';
+    const allowedOrigin = "https://udise.vercel.app";
     // Normalize origins by removing trailing slashes for comparison
     const normalizedOrigin = origin?.replace(/\/$/, '');
     const normalizedAllowed = allowedOrigin.replace(/\/$/, '');
@@ -37,7 +38,8 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  // allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
 };
 
 app.use(cors(corsOptions));
