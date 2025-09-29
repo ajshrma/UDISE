@@ -5,13 +5,5 @@
       "src": "package.json",
       "use": "@vercel/next"
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_SERVER_URL": "@NEXT_PUBLIC_SERVER_URL"
-  },
-  "build": {
-    "env": {
-      "NEXT_PUBLIC_SERVER_URL": "@NEXT_PUBLIC_SERVER_URL"
-    }
-  }
+  ]
 }
