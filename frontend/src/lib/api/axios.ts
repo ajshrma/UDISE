@@ -5,9 +5,20 @@ const instance = axios.create({
   timeout: 10000, // 10 second timeout for production
   headers: {
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000',
   },
   withCredentials: true,
 });
+
+// For SSR/Node.js requests only: explicitly set Origin and (requested) ACAO
+// Browsers do not allow setting these headers via JS; they are managed by the browser.
+if (typeof window === 'undefined') {
+  const clientOrigin = process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000';
+  instance.defaults.headers.common['Origin'] = clientOrigin;
+  // Note: Access-Control-Allow-Origin is a response header; setting it on requests has no effect,
+  // but it's included here per request for non-browser environments.
+  (instance.defaults.headers.common as any)['Access-Control-Allow-Origin'] = clientOrigin;
+}
 
 // Runtime checks to help verify CORS in the browser
 if (typeof window !== 'undefined') {
