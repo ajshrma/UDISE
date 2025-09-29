@@ -1,0 +1,44 @@
+{
+  "name": "udise-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Express.js backend for UDISE Dashboard with JWT authentication and MongoDB Atlas",
+  "main": "app.js",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js",
+    "build": "echo 'No build step required for Node.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "jwt",
+    "authentication",
+    "udise",
+    "dashboard",
+    "school-management"
+  ],
+  "author": "ajshrma",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajshrma/UDISE.git"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.4",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.2",
+    "nodemailer": "^6.9.16"
+  }
+}

@@ -1,0 +1,236 @@
+Senior Full-Stack Developer Technical Screening – I
+Unified District Information System for Education
+( UDISE )
+Time to Complete
+
+You will have 4 days from the time you receive this assignment to complete and submit
+your solution.
+
+Objective
+
+Build a secure UDISE Dashboard with a MongoDB Atlas DB, NodeJS backend and a Next.js
+frontend, deployed on Render (backend) and Vercel (frontend).
+
+You are free to choose your hosting provider (AWS, Azure, Vercel, Firebase, Render, Replit
+etc )
+
+The dashboard should:
+
+Require login with JWT authentication.
+Allow CRUD operations on dataset.
+Provide filtration on State Level, District Level, Block Level and Village Level.
+Pie Chart / Donut Chart
+% distribution of schools by management type (Govt, Private Unaided, Aided, etc.)
+% distribution of schools by location (Rural/Urban)
+% distribution by school_type (Co-Ed, Girls, Boys)
+Requirements
+
+1. Database (MongoDB Atlas) - https://www.mongodb.com/
+
+1.1 Create a free MongoDB Atlas cluster, then name your DB and add create desired
+collections for state, district, village etc as needed.
+
+1.2 Define a schema with fields: Use the link below to download the raw dataset in CSV
+format. This RAW data may need processing and cleaning depending on your schema, so
+please take care of this additional step. In case of link failure feel free to ask on WhatsApp
+Group. If you are usin free cluster and the data limit is reached, then it is advisable to only use
+only the first 8 lakhs record from the dataset.
+
+https://www.kaggle.com/datasets/hritikakolkar/schools
+
+1.3 Insert all records of the dataset into your collections
+
+2. Backend (Node.js + Express)
+
+Setup a new NodeJS project and create the following routes.
+
+1.1 Authentication (JWT)
+
+POST /api/auth/signup → Register user (store hashed password).
+POST /api/auth/login → Login with email & password → return JWT.
+All /api/data/* routes must require a valid JWT.
+
+Add New Record
+
+POST /api/data (auth required)
+Inserts a new school record.
+Request body must include mandatory fields with validation (e.g., udise_code,
+school_name, state, district, etc.).
+Get School Records (with Hierarchical Filters)
+
+GET /api/data
+Returns school records in a table format with pagination.
+Filters supported (hierarchical):
+state → returns all schools in that state (ignores district/block).
+district → returns all schools in that district (ignores block).
+block → returns all schools in that block.
+village → returns all schools in that village.
+Query params:
+state=Madhya Pradesh
+district=Bhopal
+block=SomeBlockName
+village=SomeVillageName
+page=1&limit=20 (pagination)
+Example:
+/api/data?state=Madhya Pradesh → all schools in MP
+/api/data?state=Madhya Pradesh&district=Bhopal → all schools in Bhopal district
+Update Record
+
+PUT /api/data/:id (auth required)
+Updates school record by ID.
+Request body should only include fields that need to be updated.
+Delete Record
+
+DELETE /api/data/:id (auth required)
+Deletes a school record by ID.
+Requires authentication & authorization.
+Dynamic Distribution Data
+
+We need a single API endpoint that will return aggregated distribution data for charts. The
+data returned should depend on the current active filter (state → district → block → village).
+
+Endpoint
+
+GET /api/data/distribution
+
+Query Parameters
+
+state → when passed, filter schools belonging to that state.
+district → when passed (along with state), filter schools within that district.
+block → when passed (along with district & state), filter schools within that block.
+village → when passed (along with block, district & state), filter schools within that
+village.
+This is hierarchical filtering. For example:
+
+/api/data/distribution?state=Madhya Pradesh → all schools in MP
+/api/data/distribution?state=Madhya Pradesh&district=Bhopal → schools in Bhopal
+district
+/api/data/distribution?state=Madhya Pradesh&district=Bhopal&block=XYZ →
+schools in XYZ block
+Response Format
+
+The API should return three categories of distribution (in percentages or counts, whichever
+is easier, frontend can convert to %):
+
+{
+
+"managementTypeDistribution": [
+
+{ "label": "Government", "count": 1200 },
+
+{ "label": "Private Unaided", "count": 800 },
+
+{ "label": "Aided", "count": 300 }
+
+],
+
+"locationDistribution": [
+
+{ "label": "Rural", "count": 1500 },
+
+{ "label": "Urban", "count": 800 }
+
+],
+
+"schoolTypeDistribution": [
+
+{ "label": "Co-Ed", "count": 2000 },
+
+{ "label": "Girls", "count": 200 },
+
+{ "label": "Boys", "count": 100 }
+
+]
+
+}
+
+If the user selects State = Madhya Pradesh, API returns distributions for the whole state.
+
+If the user drills down to District = Bhopal, API recalculates and returns distributions only for
+Bhopal district.
+
+Same goes for block & village level.
+
+.
+
+3. Front End – NextJS + ShadCN
+- Next.js app router framework
+- Tailwind CSS for styling
+- React Query (tanstack/react-query) or SWR for server state / cache (optional but
+recommended)
+- Axios or fetch for API calls
+- Shadcn components for tables, dialogs etc
+- Recharts or Chart.js for charts (fetch distribution endpoint and render pie/bar charts)
+
+Pages & Routes
+
+/login — Login page (POST to your auth endpoint). After successful login redirect to
+/dashboard.
+/dashboard — Main dashboard page containing:
+Top nav + logout
+Filters: hierarchical selector (State → District → Block → Village)
+List area: Table with pagination, row actions (Edit, Delete), Add New button
+Charts area: three charts (Management Type, Location, School Type)
+School Details modal (opened when clicking a row)
+Component breakdown Login Page (/login)
+
+Simple form with email/username + password
+On success: store access token in secure cookie or in-memory (do not store long-
+term in localStorage unless necessary). Redirect to /dashboard.
+Dashboard Layout
+
+Header (user info, logout)
+Side panel (optional) or top filters
+Filter Bar
+
+Four dropdowns/selects arranged hierarchically: State, District, Block, Village.
+Behavior:
+State dropdown loads list of states.
+When a state selected: fetch districts for that state and set district in store to the
+previously selected district if it still exists; else clear.
+Similar cascade for district → block → village.
+Use the same store to read/write filters and sync to URL.
+Schools Table
+
+Columns: School Name, Management, Location, School Type, State, District, Block,
+Village, Actions(Edit/Delete)
+Row clickable: clicking anywhere on a row opens School Details Modal for that
+school.
+Pagination control (page number, page size selector)
+School Form Modal (for Add / Edit)
+Form fields reflect school schema (including management, location, school_type
+and geo fields)
+After success: invalidate query cache (react-query) and update table data
+optimistically or refetch.
+Delete Confirm (modal)
+Confirm before delete. On confirmation call DELETE API and remove from list
+(optimistic update + rollback on error).
+School Details Modal
+Displays full school information (all fields) in a scrollable modal.
+Accessible (close on ESC, click outside to close optional)
+Distribution Charts
+
+Three charts: Management Type, Location, School Type
+Each chart queries GET /api/data/distribution with current filters and renders counts
+or percentages.
+
+4. Deployment
+Deploy backend (Express app) on Render.
+Deploy frontend (Next.js app) on Vercel.
+Ensure frontend APIs point to the deployed backend.
+
+5. Deliverables
+Public GitHub repo links:
+
+Backend (Express + JWT + MongoDB Atlas)
+Frontend (Next.js + shadcn + JWT auth flow).
+Deployed links (Render + Vercel).
+Bonus (Optional but Appreciated)
+
+Add charts (Recharts / Chart.js) with animations.
+Add toast notifications and loading states – react skeleton,cliploaders etc.
+The Graph data and Table Data should instantly refresh after mutation/updation -
+Use React Query if familiar.
+Use Next Auth for Authentication
+Pagination on Frontend and Backend
+Validation on frontend and backend
