@@ -7,11 +7,11 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "@next_public_api_url"
+    "NEXT_APP_SERVER_URL": "@NEXT_APP_SERVER_URL"
   },
   "build": {
     "env": {
-      "NEXT_PUBLIC_API_URL": "@next_public_api_url"
+      "NEXT_APP_SERVER_URL": "@NEXT_APP_SERVER_URL"
     }
   }
 }

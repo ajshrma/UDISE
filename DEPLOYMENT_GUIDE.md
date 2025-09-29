@@ -68,7 +68,7 @@ Frontend (Next.js) → Vercel → API Calls → Backend (Express) → Render →
 
 1. **Create `.env.production` file in frontend directory:**
    ```bash
-   NEXT_PUBLIC_API_URL=https://udise-dashboard-backend.onrender.com/api/v1
+   NEXT_APP_SERVER_URL=https://udise-dashboard-backend.onrender.com/api/v1
    ```
 
 ### Step 2: Deploy to Vercel
@@ -86,7 +86,7 @@ Frontend (Next.js) → Vercel → API Calls → Backend (Express) → Render →
 
    **Environment Variables:**
    ```
-   NEXT_PUBLIC_API_URL=https://udise-dashboard-backend.onrender.com/api/v1
+   NEXT_APP_SERVER_URL=https://udise-dashboard-backend.onrender.com/api/v1
    ```
 
 5. **Click "Deploy"**
@@ -187,7 +187,7 @@ Solution: Update CLIENT_URL in Render environment variables
 
 **2. API Connection Issues:**
 ```
-Solution: Check NEXT_PUBLIC_API_URL in Vercel environment variables
+Solution: Check NEXT_APP_SERVER_URL in Vercel environment variables
 ```
 
 **3. Database Connection Issues:**
@@ -210,7 +210,7 @@ curl http://localhost:5000/api/v1/schools
 npm run dev
 
 # Check environment variables
-echo $NEXT_PUBLIC_API_URL
+echo $NEXT_APP_SERVER_URL
 ```
 
 ---
